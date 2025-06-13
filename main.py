@@ -1,3 +1,9 @@
+#
+# Copyright (c) 2025 Salvador Lucas Domiciano de Oliveira
+#
+# This software is licensed under the MIT License.
+# See the LICENSE file in the root directory for more information.
+
 from dotenv import load_dotenv
 
 load_dotenv()
