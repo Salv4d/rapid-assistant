@@ -4,10 +4,12 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+from src.config import EMBEDDING_MODEL, VECTORSTORE_PATH
+
 def build_qa_chain():
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vectorstore = Chroma(
-        persist_directory="vectorstore",
+        persist_directory=VECTORSTORE_PATH,
         embedding_function=embeddings
     )
 

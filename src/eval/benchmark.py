@@ -1,24 +1,15 @@
-from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from src.rag.vector_store import get_vectorstore
 
-embedding_fn = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"}
-)
-
-vectordb = Chroma(
-    persist_directory="chroma_store",
-    collection_name="faq",
-    embedding_function=embedding_fn
-)
-
+# 🔎 Queries de teste e o que esperamos encontrar nos chunks
 test_cases = [
     {"query": "Embeddings são vetores?", "expected_substring": "representações numéricas"},
     {"query": "Chunking melhora a busca?", "expected_substring": "Chunks muito curtos"},
     {"query": "É útil usar metadados na busca?", "expected_substring": "melhora a precisão dos resultados"},
     {"query": "Chroma é melhor que FAISS?", "expected_substring": "Chroma"},
-    {"query": "Como saber se minha busca vetorial está funcionando bem?", "expected_substring": "métricas"}
+    {"query": "Como saber se minha busca vetorial está funcionando bem?", "expected_substring": "MRR > 0.7"}
 ]
+
+vectordb = get_vectorstore()
 
 print(f"{'Query':<55} | {'Encontrado no Top-3?':<18}")
 print("-" * 80)
