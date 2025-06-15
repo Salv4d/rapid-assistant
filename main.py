@@ -5,25 +5,30 @@
 # See the LICENSE file in the root directory for more information.
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
-from langchain_google_genai import ChatGoogleGenerativeAI
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+from rag.query_engine import ask
 
-def talk_to_llm(question):
-    print(f"Asking LLM: '{question}'")
-    answer = llm.invoke(question)
-    print(f"LLM Response: '{answer.content}'")
+def talk_to_agent(question):
+    result = ask(question)
+
+    answer = result["result"]
+    sources = result.get("source_documents", [])
+    print(f"\n Answer: \n{answer}")
+
+    if sources:
+        print("Retrieved documents:")
+        for i, doc in enumerate(sources):
+            print(f"  - [{i+1}] {doc.metadata.get('source', 'no metadata')}")
 
 if __name__ == "__main__":
-    print("Welcome to your AI assistant!")
-    print("Type 'exit' to stop the conversation.")
+    print("Rag assistant is ready!")
+    print("Type 'exit' to quit.\n")
 
     while True:
-        user_question = input("You: ")
-        if user_question.lower() == 'exit':
-            print('Goodbye!')
+        user_input = input("You: ")
+        if user_input.lower() == "exit":
+            print("Goodbye!")
             break
 
-        talk_to_llm(user_question)
+        talk_to_agent(user_input)
