@@ -5,3 +5,6 @@ __pypackages__/
 
 __pycache__/
 *.pyc
+
+vectorstore
+chroma_store
