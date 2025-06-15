@@ -1,9 +1,18 @@
 
 def finalize(state):
-    print("[finalize] state:", state)
+    print("\n✅ Final output:")
+    print(f"{state.get('final_output', '[no output]')}")
 
-    return {
-        "answer": state["result"],
-        "tool_userd": state.get("tool_used"),
-        "source_documents": state.get("source_documents", [])
-    }
+    if state.get("tool_call"):
+        print("\n🔧 Tool used:")
+        print(f"  - name: {state['tool_call']['tool']}")
+        print(f"  - input: {state['tool_call']['tool_input']}")
+
+    if state.get("source_documents"):
+        print("\n📚 Retrieved documents:")
+        for i, doc in enumerate(state["source_documents"]):
+            source = doc.metadata.get("source", "unknown")
+            preview = doc.page_content.strip().replace("\n", " ")[:120]
+            print(f"  [{i+1}] {source}: {preview}...")
+
+    return state

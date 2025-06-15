@@ -8,6 +8,6 @@ def call_rag(state):
 
     return {
         **state,
-        "result": rag_result["result"],
-        "source_documents": rag_result.get("source_documents", [])
+        "source_documents": rag_result.get("source_documents", []),
+        "final_output": rag_result["result"]
     }

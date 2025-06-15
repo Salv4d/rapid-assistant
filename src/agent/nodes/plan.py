@@ -11,7 +11,6 @@ Question: "{question}"
 
 Respond only with "tool" or "search".
 """
-    
     decision = llm.invoke(prompt).content.strip().lower()
 
     return {
