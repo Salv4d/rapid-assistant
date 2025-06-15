@@ -24,9 +24,3 @@ def build_qa_chain():
         retriever=retriever,
         return_source_documents=True
     )
-
-
-def ask(question: str):
-    """Executes the QA chain with a given question."""
-    chain = build_qa_chain()
-    return chain.invoke({"query": question})

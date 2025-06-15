@@ -1,28 +1,25 @@
-#
-# Copyright (c) 2025 Salvador Lucas Domiciano de Oliveira
-#
-# This software is licensed under the MIT License.
-# See the LICENSE file in the root directory for more information.
-
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.rag.query_engine import ask
+from src.agent.graph import build_tool_agent
 
-def talk_to_agent(question):
-    result = ask(question)
+agent = build_tool_agent()
 
-    answer = result["result"]
-    sources = result.get("source_documents", [])
-    print(f"\n Answer: \n{answer}")
 
-    if sources:
-        print("Retrieved documents:")
-        for i, doc in enumerate(sources):
-            print(f"  - [{i+1}] {doc.metadata.get('source', 'no metadata')}")
+def talk_to_agent(question: str):
+    result = agent.invoke({"input": question})
+
+    print("\n🧠 Answer:")
+    print(result.get("final_output", "[no output]"))
+
+    if result.get("tool_call"):
+        print("\n🔧 Tool used:")
+        print(f"  - name: {result['tool_call']['tool']}")
+        print(f"  - input: {result['tool_call']['tool_input']}")
+
 
 if __name__ == "__main__":
-    print("Rag assistant is ready!")
+    print("Rapid Assistant is ready (Tool Calling mode).")
     print("Type 'exit' to quit.\n")
 
     while True:
