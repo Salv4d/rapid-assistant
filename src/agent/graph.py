@@ -1,8 +1,6 @@
-from typing import TypedDict, Optional, Any
+from typing import TypedDict, Optional
 from langgraph.graph import StateGraph
-from src.agent.nodes import call_tool, call_rag, finalize, plan
-from src.rag.query_engine import get_llm
-from src.agent.tool_registry import TOOLS
+from src.agent.nodes import execute_step, finalize, plan, receive_input
 
 class ToolAgentState(TypedDict, total=False):
     input: str
@@ -14,26 +12,18 @@ class ToolAgentState(TypedDict, total=False):
 
 
 def build_tool_agent():
-    graph = StateGraph(ToolAgentState)
-    graph.add_node("plan", plan)
-    graph.add_node("call_tool", call_tool)
-    graph.add_node("call_rag", call_rag)
-    graph.add_node("finalize", finalize)
+    builder = StateGraph(ToolAgentState)
+    builder.add_node("receive_input", receive_input)
+    builder.add_node("plan", plan)
+    builder.add_node("execute_step", execute_step)
+    builder.add_node("finalize", finalize)
 
-    graph.set_entry_point("plan")
+    builder.set_entry_point("receive_input")
+    builder.add_edge("receive_input", "plan")
+    
+    builder.add_edge("plan", "execute_step")
 
-    graph.add_conditional_edges(
-        "plan",
-        lambda state: state["next"],
-        {
-            "tool": "call_tool",
-            "search": "call_rag"
-        }
-    )
+    builder.add_edge("execute_step", "finalize")
+    builder.set_finish_point("finalize")
 
-    graph.add_edge("call_tool", "finalize")
-    graph.add_edge("call_rag", "finalize")
-
-    graph.set_finish_point("finalize")
-
-    return graph.compile()
+    return builder.compile()
