@@ -7,7 +7,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from rag.query_engine import ask
+from src.rag.query_engine import ask
 
 def talk_to_agent(question):
     result = ask(question)

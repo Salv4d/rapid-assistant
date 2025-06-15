@@ -1,32 +1,32 @@
-from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from src.config import EMBEDDING_MODEL, VECTORSTORE_PATH
+from src.rag.vector_store import get_vectorstore
+from src.config import ACTIVE_LLM_PROVIDER
+
+
+def get_llm():
+    """Factory for selecting the active LLM provider."""
+    if ACTIVE_LLM_PROVIDER == "gemini":
+        return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+    else:
+        raise ValueError(f"Unsupported LLM provider: {ACTIVE_LLM_PROVIDER}")
+
 
 def build_qa_chain():
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
-    vectorstore = Chroma(
-        persist_directory=VECTORSTORE_PATH,
-        embedding_function=embeddings
-    )
+    """Builds a RAG chain using the configured vector store and LLM."""
+    retriever = get_vectorstore().as_retriever()
+    llm = get_llm()
 
-    retriever = vectorstore.as_retriever()
-
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
-
-    chain = RetrievalQA.from_chain_type(
+    return RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
         return_source_documents=True
     )
 
-    return chain
 
 def ask(question: str):
+    """Executes the QA chain with a given question."""
     chain = build_qa_chain()
-    result = chain.invoke({"query": question})
-    return result
-    
+    return chain.invoke({"query": question})

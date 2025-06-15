@@ -1,46 +1,61 @@
-# FAQ - Assistente Inteligente
+# FAQ - Pop Culture, Books & Movies
 
 ---
 
-### 🤖 Embeddings são vetores?
+### 🎬 What is the main theme of the movie Inception?
 
-Sim. Embeddings são representações numéricas (vetores) que capturam o significado semântico de entradas como textos ou imagens. Cada embedding é um vetor, mas nem todo vetor é um embedding — o embedding tem um propósito semântico específico.
-
----
-
-### 🔍 O que significa "chunkar" um documento?
-
-"Chunkar" é dividir um documento em partes menores (chamadas chunks) para melhorar a indexação e recuperação.  
-Chunks muito curtos perdem contexto. Chunks muito longos dificultam distinção semântica.  
-O ideal geralmente é entre 200 e 400 tokens, com sobreposição de 10–20%.
+Inception explores the nature of dreams, reality, and subconscious influence. Its core theme revolves around the power of ideas and the blurred line between what's real and what's imagined.
 
 ---
 
-### 🧠 Vale a pena usar metadados junto com embeddings?
+### 📚 What is the significance of the white whale in Moby-Dick?
 
-Sim. Metadados como autor, tipo de documento ou categoria permitem aplicar filtros na busca vetorial.  
-Combinar embeddings com metadados melhora a precisão dos resultados e reduz ruído.
-
----
-
-### ⚙️ Chroma ou FAISS: qual o melhor banco vetorial?
-
-Depende do caso:
-
-- **Chroma:** melhor para projetos pequenos ou médios, com ótima integração com LangChain.
-- **FAISS:** excelente performance com grandes volumes de dados, mas requer configuração manual.
-
-Ambos são bons — escolha depende da sua stack e escala.
+The white whale, Moby Dick, symbolizes different things to different characters — obsession, the unknowable, fate, and nature's indifference. For Captain Ahab, it becomes a symbol of personal vengeance and self-destruction.
 
 ---
 
-### 📊 Como saber se minha busca vetorial está funcionando bem?
+### 🧙 What house is Harry Potter sorted into?
 
-Use métricas:
+Harry Potter is sorted into **Gryffindor**, known for bravery, courage, and chivalry. The Sorting Hat initially considered Slytherin but placed him in Gryffindor due to his personal values and choices.
 
-- **Precision@k** — quantos dos `k` resultados são realmente relevantes?
-- **MRR (Mean Reciprocal Rank)** — qual a posição do primeiro resultado relevante?
-- Resultados ideais:
-  - MRR > 0.7
-  - Precision@3 > 0.66
-  - A resposta correta no top 5 da maioria dos testes.
+---
+
+### 🛸 What is the plot of Arrival about?
+
+Arrival is a sci-fi drama that follows a linguist, Dr. Louise Banks, as she attempts to communicate with alien visitors. The film deals with time perception, language shaping thought, and the emotional weight of future knowledge.
+
+---
+
+### 🧟 Who created The Walking Dead?
+
+The Walking Dead comic was created by **Robert Kirkman**, with artwork by Tony Moore (later by Charlie Adlard). It started in 2003 and became one of the most successful independent comics, later adapted into a long-running TV series.
+
+---
+
+### 🧠 What is 1984 by George Orwell about?
+
+1984 is a dystopian novel portraying a totalitarian regime led by Big Brother. It critiques surveillance, censorship, and authoritarianism, illustrating how language and truth can be manipulated by power.
+
+---
+
+### 👽 Who directed Alien (1979)?
+
+The original Alien movie was directed by **Ridley Scott**. It launched a genre-defining franchise combining sci-fi and horror, introducing the character of Ellen Ripley and the iconic Xenomorph creature.
+
+---
+
+### 🧙‍♂️ What is the One Ring in The Lord of the Rings?
+
+The One Ring is a powerful artifact forged by Sauron to control all other Rings of Power. It corrupts those who possess it and is the central object of obsession and conflict throughout the story.
+
+---
+
+### 🧛 Who wrote Dracula?
+
+Dracula was written by **Bram Stoker** in 1897. It is considered the defining novel of modern vampire lore, influencing countless adaptations and the popular image of vampires in Western culture.
+
+---
+
+### 🕶️ What is The Matrix really about?
+
+The Matrix is a cyberpunk action film that explores themes of simulated reality, control, and awakening. It's often interpreted as an allegory for breaking free from systems of oppression or illusion — both technological and philosophical.
