@@ -5,8 +5,8 @@ def finalize(state):
 
     if state.get("tool_call"):
         print("\n🔧 Tool used:")
-        print(f"  - name: {state['tool_call']['tool']}")
-        print(f"  - input: {state['tool_call']['tool_input']}")
+        print(f"  - name: {state['tool_call'].get('tool', '[unknown]')}")
+        print(f"  - input: {state['tool_call'].get('tool_input', {})}")
 
     if state.get("source_documents"):
         print("\n📚 Retrieved documents:")
