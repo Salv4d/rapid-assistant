@@ -9,5 +9,5 @@ def call_rag(state):
     return {
         **state,
         "source_documents": rag_result.get("source_documents", []),
-        "final_output": rag_result["result"]
+        "final_output": rag_result.get("result", "No answer was returned by the RAG chain.")
     }
