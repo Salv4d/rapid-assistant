@@ -52,7 +52,7 @@ Create a `.env` file with any necessary API keys (e.g., for OpenAI, Gemini, etc.
 | 1.2       | ✅     | RAG with ChromaDB           |
 | 1.3       | ✅     | Tool Calling agent          |
 | 2.1       | ✅     | Modular LangGraph structure |
-| 2.2       | 🔜     | Short-term memory           |
+| 2.2       | ✅     | Short-term memory           |
 | 2.3       | 🔜     | Long-term user memory       |
 | 2.4       | 🔜     | Human-in-the-loop support   |
 | 3.x       | 🔜     | FastAPI + Slack integration |

@@ -1,17 +1,24 @@
+from src.agent.memory.base import add_ai_message, add_user_message, get_history
+from src.agent.memory.prompt import build_contextual_prompt
 from src.rag.query_engine import get_llm
 
 def plan(state):
-    llm = get_llm()
     question = state["input"]
+    add_user_message(question)
 
-    prompt = f"""
+    prompt = build_contextual_prompt(
+        get_history(),
+        question,
+        system_message=f"""
 You are a smart planner. Decide whether to use a TOOL or SEARCH to answer this question.
-
-Question: "{question}"
-
 Respond only with "tool" or "search".
-"""
-    decision = llm.invoke(prompt).content.strip().lower()
+""")
+
+    llm = get_llm()
+
+    decision = (prompt | llm).invoke({}).content.strip().lower()
+
+    add_ai_message(decision)
 
     return {
         **state,

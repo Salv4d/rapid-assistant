@@ -1,12 +1,23 @@
+from src.agent.memory.base import add_ai_message, add_user_message, get_history
+from src.agent.memory.prompt import build_contextual_prompt
 from src.rag.query_engine import get_llm
 from src.agent.tool_registry import TOOLS
 
 
 def call_tool(state):
     question = state["input"]
-    
+    add_user_message(question)
+
+    prompt = build_contextual_prompt(
+        history=get_history(),
+        user_input=question,
+        system_message="You are a helpful AI that decides when and how to use tools to answer questions."
+    )
+
     llm = get_llm().bind_tools(TOOLS)
-    tool_response = llm.invoke(question)
+    
+    tool_response = (prompt | llm).invoke({})
+    add_ai_message(tool_response.content)
 
     tool_call = tool_response.tool_calls[0] if tool_response.tool_calls else None
 
