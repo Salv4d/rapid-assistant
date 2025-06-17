@@ -11,7 +11,7 @@ class ToolAgentState(TypedDict, total=False):
     final_output: Optional[str]
 
 
-def build_tool_agent():
+def build_agent_graph():
     builder = StateGraph(ToolAgentState)
     builder.add_node("receive_input", receive_input)
     builder.add_node("plan", plan)
