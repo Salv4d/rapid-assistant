@@ -9,12 +9,14 @@ class AgentState(TypedDict, total=False):
     rag_result: Optional[str]
     source_documents: Optional[list]
     final_output: Optional[str]
+    user_id: Optional[str]
 
 def route_next_step(state: AgentState) -> str:
     return state.get("next", "finalize")
 
 def build_agent_graph():
     builder = StateGraph(AgentState)
+
     builder.add_node("receive_input", receive_input)
     builder.add_node("plan", plan)
     builder.add_node("call_tool", call_tool)
