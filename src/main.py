@@ -14,10 +14,12 @@ if __name__ == "__main__":
     print("Rapid Assistant is ready (Tool Calling mode).")
     print("Type 'exit' to quit.\n")
 
+    user_id = input("Enter your user ID: ").strip()
+
     while True:
         user_input = input("You: ")
         if user_input.lower() == "exit":
             print("Goodbye!")
             break
-
-        agent.invoke({"input": user_input})
+        
+        agent.invoke({"input": user_input, "user_id": user_id})
