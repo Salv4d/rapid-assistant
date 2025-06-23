@@ -1,7 +1,13 @@
+from src.agent.memory import store_memory
+from src.agent.memory import should_store_with_llm
 
 def finalize(state):
-    print("\n✅ Final output:")
-    print(f"{state.get('final_output', '[no output]')}")
+    user_id = state.get("user_id", "anonymous")
+    user_input = state.get("input", "")
+    output = state.get("final_output", "")
+
+    print(f"\n✅ Current User Id: {user_id} Final output:")
+    print(f"{output}")
 
     if state.get("tool_call"):
         print("\n🔧 Tool used:")
@@ -14,5 +20,13 @@ def finalize(state):
             source = doc.metadata.get("source", "unknown")
             preview = doc.page_content.strip().replace("\n", " ")[:120]
             print(f"  [{i+1}] {source}: {preview}...")
+
+    if user_id.lower() == "anonymous" or not output:
+        return state
+
+    if should_store_with_llm(user_input, output):
+        print("New memory stored.")
+        memory_text = f"User asked: {user_input}\nAI answered: {output}"
+        store_memory(user_id, memory_text)
 
     return state
