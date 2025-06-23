@@ -1,4 +1,4 @@
-from src.rag.vector_store import get_vectorstore
+from src.rag.vector_store import get_rag_vectorstore
 
 test_cases = [
     {
@@ -43,7 +43,7 @@ test_cases = [
     }
 ]
 
-vectordb = get_vectorstore()
+vectordb = get_rag_vectorstore()
 
 print(f"{'Query':<55} | {'Found in the Top-3?':<18}")
 print("-" * 80)
