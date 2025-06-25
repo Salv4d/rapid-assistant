@@ -1,25 +1,38 @@
 from src.agent.memory.base import add_ai_message, add_user_message, get_history
 from src.agent.memory.prompt import build_contextual_prompt
-from src.rag.query_engine import build_qa_chain
+from src.rag.query_engine import build_qa_chain, get_llm
 
 def call_rag(state):
     question = state["input"]
+    user_context = state.get("user_context", "")
+    rag_docs = state.get("rag_docs", [])
+
     add_user_message(question)
 
-    prompt = build_contextual_prompt(
-        history=get_history(),
-        user_input=question,
-        system_message="You are an intelligent assistant that answers user questions using relevant documents.",
+    context_str = "\n".join(doc.page_content for doc in rag_docs)
+
+    system_message = (
+        "You are a helpful and intelligent assistant that answers user questions using relevant documents.\n"
+        "Always follow the user's preferences when formatting and writing your response.\n"
+        f"User preferences:\n{user_context.strip()}"
     )
 
-    chain = build_qa_chain()
+    prompt_template = build_contextual_prompt(
+        history=get_history(),
+        user_input=question,
+        system_message=system_message,
+        long_term_memory=context_str
+    )
 
-    rag_result = chain.invoke({"query": prompt.format()})
+    llm = get_llm()
+    prompt = prompt_template.format()
 
-    add_ai_message(rag_result.get("result", ""))
+    response = llm.invoke(prompt)
+
+    add_ai_message(response.content)
 
     return {
         **state,
-        "source_documents": rag_result.get("source_documents", []),
-        "final_output": rag_result.get("result", "No answer was returned by the RAG chain.")
+        "final_output": response.content,
+        "source_documents": rag_docs
     }
