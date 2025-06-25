@@ -45,3 +45,16 @@ def create_vectorstore_from_documents(documents):
         collection_name=COLLECTION_NAME_RAG,
     )
 
+def get_rag_retriever():
+    """
+    Returns a retriever for the RAG knowledge base.
+    Useful when you want to inject context before sending to the LLM.
+    """
+    return get_rag_vectorstore().as_retriever()
+
+def get_user_profile_retriever(search_kwargs={}):
+    """
+    Returns a retriever for long-term user memory.
+    This can be used to personalize the assistant at the start of a session.
+    """
+    return get_memory_vectorstore().as_retriever(search_kwargs=search_kwargs)
