@@ -1,5 +1,6 @@
 from src.agent.memory import store_memory
 from src.agent.memory import should_store_with_llm
+from src.rag.query_engine import get_llm
 
 def finalize(state):
     user_id = state.get("user_id", "anonymous")
@@ -24,9 +25,10 @@ def finalize(state):
     if user_id.lower() == "anonymous" or not output:
         return state
 
-    if should_store_with_llm(user_input, output):
-        print("New memory stored.")
-        memory_text = f"User asked: {user_input}\nAI answered: {output}"
-        store_memory(user_id, memory_text)
+    store, text_to_store = should_store_with_llm(user_input, output)
+
+    if store:
+        print("New memory stored:", text_to_store)
+        store_memory(user_id, text_to_store)
 
     return state
