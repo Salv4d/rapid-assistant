@@ -3,7 +3,7 @@ from langchain_core.documents import Document
 from src.rag.vector_store import get_memory_vectorstore
 
 
-def store_memory(user_id: str, content: str):
+def store_memory(user_id: str, content: str) -> None:
     document = Document(
         page_content=content,
         metadata={"user_id": user_id},
@@ -12,7 +12,7 @@ def store_memory(user_id: str, content: str):
     vectorstore.add_documents([document])
 
 
-def retrieve_memory(user_id: str, query: str, k: int = 3):
+def retrieve_memory(user_id: str, query: str, k: int = 3) -> list[Document]:
     vectorstore = get_memory_vectorstore()
     results = vectorstore.similarity_search_with_score(
         query,
