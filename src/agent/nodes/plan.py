@@ -1,5 +1,9 @@
-from src.agent.memory.base import add_ai_message, add_user_message, get_history
-from src.agent.memory.prompt import build_contextual_prompt
+from src.agent.memory import (
+    add_ai_message,
+    add_user_message,
+    build_contextual_prompt,
+    get_history,
+)
 from src.rag.query_engine import get_llm
 
 
