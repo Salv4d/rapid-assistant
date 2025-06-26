@@ -1,10 +1,11 @@
 import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 from subprocess import run
-import os
+
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 DOCS_DIR = "docs"
+
 
 class DocsChangeHandler(FileSystemEventHandler):
     def on_any_event(self, event):
@@ -12,7 +13,8 @@ class DocsChangeHandler(FileSystemEventHandler):
             return
         if event.event_type in ("created", "modified", "deleted", "moved"):
             print(f"Detected change in: {event.src_path} — Reindexing...")
-            run(["python", "-m", "src.ingest.index"])
+            run(["python", "-m", "src.ingest.index"], check=False)
+
 
 def start_watch():
     observer = Observer()
@@ -26,6 +28,7 @@ def start_watch():
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
+
 
 if __name__ == "__main__":
     start_watch()

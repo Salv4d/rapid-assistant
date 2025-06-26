@@ -1,6 +1,7 @@
 from src.agent.memory.base import add_ai_message, add_user_message, get_history
 from src.agent.memory.prompt import build_contextual_prompt
-from src.rag.query_engine import build_qa_chain, get_llm
+from src.rag.query_engine import get_llm
+
 
 def call_rag(state):
     question = state["input"]
@@ -21,7 +22,7 @@ def call_rag(state):
         history=get_history(),
         user_input=question,
         system_message=system_message,
-        long_term_memory=context_str
+        long_term_memory=context_str,
     )
 
     llm = get_llm()
@@ -34,5 +35,5 @@ def call_rag(state):
     return {
         **state,
         "final_output": response.content,
-        "source_documents": rag_docs
+        "source_documents": rag_docs,
     }

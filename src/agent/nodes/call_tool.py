@@ -1,7 +1,7 @@
 from src.agent.memory.base import add_ai_message, add_user_message, get_history
 from src.agent.memory.prompt import build_contextual_prompt
-from src.rag.query_engine import get_llm
 from src.agent.tool_registry import TOOLS
+from src.rag.query_engine import get_llm
 
 
 def call_tool(state):
@@ -11,11 +11,11 @@ def call_tool(state):
     prompt = build_contextual_prompt(
         history=get_history(),
         user_input=question,
-        system_message="You are a helpful AI that decides when and how to use tools to answer questions."
+        system_message="You are a helpful AI that decides when and how to use tools to answer questions.",
     )
 
     llm = get_llm().bind_tools(TOOLS)
-    
+
     tool_response = (prompt | llm).invoke({})
     add_ai_message(tool_response.content)
 
@@ -24,7 +24,7 @@ def call_tool(state):
     if not tool_call:
         return {
             **state,
-            "final_output": "No tool was suggested by the model."
+            "final_output": "No tool was suggested by the model.",
         }
 
     tool_name = tool_call["name"]
@@ -37,15 +37,15 @@ def call_tool(state):
                 return {
                     **state,
                     "tool_call": {"tool": tool_name, "tool_input": tool_input},
-                    "final_output": result
+                    "final_output": result,
                 }
             except Exception as e:
                 return {
                     **state,
-                    "final_output": f"Error while executing tool '{tool_name}': {str(e)}"
+                    "final_output": f"Error while executing tool '{tool_name}': {e!s}",
                 }
 
     return {
         **state,
-        "final_output": f"Tool '{tool_name}' not found"
+        "final_output": f"Tool '{tool_name}' not found",
     }

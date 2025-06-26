@@ -1,12 +1,13 @@
 import json
 import re
-from typing import Optional
+
 from src.rag.query_engine import get_llm
+
 
 def should_store_with_llm(user_input: str, ai_output: str) -> tuple[bool, str | None]:
     """Ask the LLM whether to store, and what to store, from the user/AI interaction."""
     llm = get_llm()
-    
+
     prompt = f"""
 You are managing long-term memory for an AI assistant.
 
@@ -36,8 +37,9 @@ AI responded:
     except Exception as e:
         print(f"[WARN] Failed to parse LLM memory response: {e}")
         return False, None
-    
-def safe_parse_json(text: str) -> Optional[dict]:
+
+
+def safe_parse_json(text: str) -> dict | None:
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
         return None

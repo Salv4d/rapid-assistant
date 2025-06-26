@@ -1,13 +1,13 @@
 import os
 import shutil
-from langchain_community.document_loaders import TextLoader, PyMuPDFLoader
-from src.rag.vector_store import (
-    get_text_splitter,
-    create_vectorstore_from_documents
-)
+
+from langchain_community.document_loaders import PyMuPDFLoader, TextLoader
+
 from src.config import VECTORSTORE_PATH
+from src.rag.vector_store import create_vectorstore_from_documents, get_text_splitter
 
 DOCS_DIR = "docs"
+
 
 def load_all_documents_from_directory():
     """Loads all supported documents from the docs directory."""
@@ -34,6 +34,7 @@ def load_all_documents_from_directory():
 
     return documents
 
+
 def main():
     shutil.rmtree(VECTORSTORE_PATH, ignore_errors=True)
     os.makedirs(VECTORSTORE_PATH, exist_ok=True)
@@ -48,6 +49,7 @@ def main():
     create_vectorstore_from_documents(chunks)
 
     print(f"{len(documents)} document(s) successfully indexed.")
+
 
 if __name__ == "__main__":
     main()

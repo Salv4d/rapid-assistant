@@ -1,20 +1,32 @@
-from typing import TypedDict, Optional
+from typing import TypedDict
+
 from langgraph.graph import StateGraph
-from src.agent.nodes import call_rag, call_tool, finalize, plan, receive_input, enrich_context
+
+from src.agent.nodes import (
+    call_rag,
+    call_tool,
+    enrich_context,
+    finalize,
+    plan,
+    receive_input,
+)
+
 
 class AgentState(TypedDict, total=False):
     input: str
-    next: Optional[str]
-    tool_call: Optional[dict]
-    rag_result: Optional[str]
-    source_documents: Optional[list]
-    final_output: Optional[str]
-    user_id: Optional[str]
-    user_context: Optional[str]
-    rag_docs: Optional[str]
+    next: str | None
+    tool_call: dict | None
+    rag_result: str | None
+    source_documents: list | None
+    final_output: str | None
+    user_id: str | None
+    user_context: str | None
+    rag_docs: str | None
+
 
 def route_next_step(state: AgentState) -> str:
     return state.get("next", "finalize")
+
 
 def build_agent_graph():
     builder = StateGraph(AgentState)
@@ -29,14 +41,14 @@ def build_agent_graph():
     builder.set_entry_point("receive_input")
     builder.add_edge("receive_input", "enrich_context")
     builder.add_edge("enrich_context", "plan")
-    
+
     builder.add_conditional_edges(
         "plan",
         path=route_next_step,
         path_map={
             "tool": "call_tool",
-            "search": "call_rag"
-        }
+            "search": "call_rag",
+        },
     )
 
     builder.add_edge("call_tool", "finalize")

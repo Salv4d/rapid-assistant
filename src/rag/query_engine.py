@@ -1,9 +1,8 @@
-from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from src.rag.vector_store import get_rag_vectorstore
 from src.config import ACTIVE_LLM_PROVIDER
+from src.rag.vector_store import get_rag_vectorstore
 
 
 def get_llm():
@@ -22,5 +21,5 @@ def build_qa_chain():
     return RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
-        return_source_documents=True
+        return_source_documents=True,
     )

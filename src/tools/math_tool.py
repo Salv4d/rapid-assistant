@@ -1,5 +1,6 @@
 from langchain.tools import tool
 
+
 @tool
 def calculate(expression: str) -> str:
     """Evaluate a math expression like '3 + 2 * 7'."""
